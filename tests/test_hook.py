@@ -1,4 +1,5 @@
 import subprocess
+import unicodedata
 from unittest.mock import Mock
 
 import pytest
@@ -43,6 +44,19 @@ def test_ignores_an_unreadable_event(project):
 
     assert exit_code == 0
     validate.assert_not_called()
+
+
+def test_recognizes_the_analysis_with_another_unicode_form(tmp_path):
+    """macOS can spell "ñ" in two ways, and a path with either form is the same file."""
+    project = tmp_path / unicodedata.normalize("NFC", "España")
+    (project / "private").mkdir(parents=True)
+    write_report(project, [])
+    analysis_path = unicodedata.normalize("NFD", str(project / "private" / "analysis.json"))
+    validate = Mock(return_value=PROCESSED)
+
+    handle_event(write_event(analysis_path), project, validate)
+
+    validate.assert_called_once_with(project)
 
 
 def test_an_analysis_without_rejections_passes(project):
@@ -154,6 +168,8 @@ def test_run_validate_uses_paths_relative_to_the_project(project, monkeypatch):
     assert command == [
         "docker",
         "compose",
+        "--progress",
+        "quiet",
         "run",
         "--rm",
         "-T",

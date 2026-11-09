@@ -103,6 +103,9 @@ reglas determinísticas, no el juicio del LLM.
   requisito, o si el proyecto creciera o pasara a producción, un subagente juzgaría solo
   el requisito y la cita, sin ver el razonamiento original. Sumaría uso del plan y más
   piezas, y seguiría siendo un LLM.
+- **Aviso por muchas citas rechazadas:** el reporte se escribe siempre que el análisis
+  tenga un formato válido. Si la mini eval muestra porcentajes altos de rechazo, la skill
+  podría advertir que conviene revisar el análisis, por ejemplo por encima del 30%.
 - **Más de una oferta a la vez:** hoy las rutas de trabajo son fijas y cada análisis pisa
   el anterior. Si el proyecto creciera o pasara a producción, cada análisis necesitaría
   su propio espacio de trabajo.

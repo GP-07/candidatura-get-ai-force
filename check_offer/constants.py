@@ -2,6 +2,14 @@ EXIT_OK = 0
 EXIT_INPUT_ERROR = 1
 EXIT_INVALID_CONTRACT = 2
 
+EXIT_BLOCK_AGENT = 2
+
+ANALYSIS_PATH = "private/analysis.json"
+CV_TEXT_PATH = "private/converted/cv.txt"
+REPORT_PATH = "private/report.json"
+REJECTED_LOG_PATH = "private/rejected_quotes.jsonl"
+ATTEMPTS_PATH = "private/.analysis_attempts"
+
 TEXT_EXTENSIONS = {".md", ".txt"}
 PDF_EXTENSION = ".pdf"
 
