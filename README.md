@@ -1,8 +1,8 @@
 # Chequeo de una oferta contra un CV
 
-> **Estado:** en construcción. Este README describe el objetivo del proyecto; por ahora
-> solo está lista la base (Docker y test de humo). El avance está en
-> [docs/PLAN.md](docs/PLAN.md).
+> **Estado:** implementado, con 76 tests automáticos. El flujo normal se probó una vez con
+> datos ficticios. Quedan pruebas manuales pendientes, listadas en
+> [docs/SKILL_CHECKLIST.md](docs/SKILL_CHECKLIST.md).
 
 ## Qué problema resuelve
 
@@ -57,6 +57,30 @@ skill.
 - **Datos reales fuera del repo:** los tests usan datos ficticios y los datos reales van
   en `private/`, ignorada por git.
 
+## Cómo correrlo
+
+Requisitos: Docker, Claude Code y `python3`. Solo se probó en una Mac; en Windows, por
+ejemplo, el comando `python3` puede no existir.
+
+La imagen se construye sola la primera vez. Para correr los tests:
+
+```bash
+docker compose run --rm tests
+```
+
+Para analizar una oferta, abrí esta carpeta en Claude Code. Al abrirla, puede pedirte
+confirmar que confiás en sus hooks y permitir los comandos de Docker. Después ejecutá
+la skill con la oferta y el CV, en ese orden:
+
+```
+/check-offer examples/offer.md examples/cv.md
+```
+
+Se aceptan archivos `.md`, `.txt` y `.pdf`. Para usar datos propios, dejalos en
+`private/`, que git ignora. Docker tiene que estar abierto.
+
+El resultado queda en `private/report.json`. Cada análisis pisa el anterior.
+
 ## Límites
 
 ### Qué garantiza el validador
@@ -89,8 +113,6 @@ Cómo se aborda por ahora:
 
 - La skill exige que la cita nombre la tecnología o un equivalente directo; si no, el
   score es `0` y la cita, `null`.
-- La mini eval incluye requisitos que no están en el CV, para medir si el agente
-  inventa una relación.
 - El reporte deja juntos el requisito, la cita y la justificación, para la revisión
   humana.
 
@@ -99,13 +121,30 @@ reglas determinísticas, no el juicio del LLM.
 
 ## Mejoras posibles
 
-- **Segunda pasada con un subagente:** si la mini eval muestra citas sin relación con el
+- **Mini eval con datos reales:** medir con un CV y una oferta reales, incluyendo
+  requisitos ausentes del CV, si el agente inventa una relación y cuántas citas se
+  rechazan. No se hizo; hasta ahora solo hubo una corrida con datos ficticios.
+- **Segunda pasada con un subagente:** si esa medición muestra citas sin relación con el
   requisito, o si el proyecto creciera o pasara a producción, un subagente juzgaría solo
   el requisito y la cita, sin ver el razonamiento original. Sumaría uso del plan y más
   piezas, y seguiría siendo un LLM.
 - **Aviso por muchas citas rechazadas:** el reporte se escribe siempre que el análisis
-  tenga un formato válido. Si la mini eval muestra porcentajes altos de rechazo, la skill
+  tenga un formato válido. Si la medición muestra porcentajes altos de rechazo, la skill
   podría advertir que conviene revisar el análisis, por ejemplo por encima del 30%.
 - **Más de una oferta a la vez:** hoy las rutas de trabajo son fijas y cada análisis pisa
   el anterior. Si el proyecto creciera o pasara a producción, cada análisis necesitaría
   su propio espacio de trabajo.
+
+## Cómo se desarrolló
+
+Lo construyeron Guido Pallas y Claude Code (modelo Opus 5.5) en sesiones de trabajo con
+revisión humana paso a paso. Claude Code escribió el código, los tests y la documentación,
+incluido este texto. Guido definió el alcance, revisó cada fase, pidió cambios e hizo los
+commits.
+
+Se avanzó por fases con TDD: tests en rojo, revisión, implementación mínima y revisión.
+La skill es la excepción, porque su salida no es determinística: se valida con una
+checklist manual.
+
+El detalle, con los errores del agente, las correcciones y lo que no se hizo, está en
+[docs/PROCESS.md](docs/PROCESS.md).

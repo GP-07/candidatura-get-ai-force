@@ -130,9 +130,8 @@ checklist manual y ejemplos, incluida una oferta con una instrucción maliciosa.
 
 ### Fase 6: prueba real y cierre
 
-Corrida con la oferta y el CV reales, mini eval manual de 5 requisitos, revisión de
-código y de seguridad, `README.md` y `PROCESS.md` con lo que haya ocurrido.
+Revisión de código y de seguridad, `README.md` y `docs/PROCESS.md` con lo que haya ocurrido.
 
-La mini eval incluye requisitos que no están en el CV, para medir si el agente inventa
-una relación. Con ese resultado se decide si implementar la segunda pasada con un
-subagente. Si no se implementa, queda como mejora en el README.
+Se decidió no hacer la mini eval con datos reales: queda como mejora en el README, junto
+con la segunda pasada con un subagente, que dependía de ese resultado. Las pruebas
+manuales pendientes están en `docs/SKILL_CHECKLIST.md`.
