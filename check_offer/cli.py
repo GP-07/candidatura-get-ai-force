@@ -3,13 +3,16 @@ import sys
 from pathlib import Path
 
 from check_offer.constants import (
+    EXIT_INPUT_ERROR,
     EXIT_INVALID_CONTRACT,
     EXIT_OK,
     GENERIC_WORDS_EN,
     GENERIC_WORDS_ES,
 )
-from check_offer.report import build_report
-from check_offer.validate import ContractError, parse_analysis
+from check_offer.convert import read_text_file
+from check_offer.exceptions import ContractError, InputError
+from check_offer.matching import run_matching
+from check_offer.validate import parse_analysis
 
 
 def main(argv):
@@ -17,7 +20,8 @@ def main(argv):
 
     Returns EXIT_OK when the analysis was processed, even if quotes were rejected:
     deciding whether to retry belongs to the hook, which reads the report.
-    Returns EXIT_INVALID_CONTRACT and writes nothing when the analysis is invalid.
+    Returns EXIT_INVALID_CONTRACT or EXIT_INPUT_ERROR, and writes nothing, when the
+    analysis is invalid or an input file cannot be read.
     """
     parser = argparse.ArgumentParser(prog="check_offer")
     parser.add_argument("analysis", type=Path)
@@ -27,16 +31,23 @@ def main(argv):
     args = parser.parse_args(argv)
 
     try:
-        requirements = parse_analysis(args.analysis.read_text(encoding="utf-8"))
+        raw_analysis = read_text_file(args.analysis)
+        cv_text = read_text_file(args.cv)
+    except InputError as error:
+        print(f"Invalid input: {error}", file=sys.stderr)
+        return EXIT_INPUT_ERROR
+
+    try:
+        requirements = parse_analysis(raw_analysis)
     except ContractError as error:
         print(f"Invalid analysis: {error}", file=sys.stderr)
         return EXIT_INVALID_CONTRACT
 
-    cv_text = args.cv.read_text(encoding="utf-8")
-    report = build_report(
+    report = run_matching(
         requirements, cv_text, GENERIC_WORDS_ES | GENERIC_WORDS_EN
     )
 
+    args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(report.model_dump_json(indent=2), encoding="utf-8")
     _record_rejected_quotes(report.rejected_quotes, args.rejected_log)
     return EXIT_OK

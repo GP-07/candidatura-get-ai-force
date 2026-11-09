@@ -3,7 +3,8 @@ import json
 
 import pytest
 
-from check_offer.validate import ContractError, parse_analysis
+from check_offer.exceptions import ContractError
+from check_offer.validate import parse_analysis
 
 
 VALID_ANALYSIS = {

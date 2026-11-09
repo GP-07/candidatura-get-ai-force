@@ -1,5 +1,5 @@
 from check_offer.models import QuoteStatus, Requirement
-from check_offer.report import build_report
+from check_offer.matching import run_matching
 
 
 CV_TEXT = "Desarrollo backend con Python y Django."
@@ -16,7 +16,7 @@ def requirement(score, quote, name="Experiencia con Python"):
 
 
 def report_for(*requirements):
-    return build_report(list(requirements), CV_TEXT, GENERIC_WORDS)
+    return run_matching(list(requirements), CV_TEXT, GENERIC_WORDS)
 
 
 def test_a_valid_quote_keeps_its_score():

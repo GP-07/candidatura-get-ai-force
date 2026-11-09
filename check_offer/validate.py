@@ -1,10 +1,7 @@
 from pydantic import ValidationError
 
+from check_offer.exceptions import ContractError
 from check_offer.models import Analysis
-
-
-class ContractError(Exception):
-    pass
 
 
 def parse_analysis(raw):

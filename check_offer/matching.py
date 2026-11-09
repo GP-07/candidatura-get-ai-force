@@ -8,7 +8,7 @@ from check_offer.models import (
 from check_offer.quotes import check_quote
 
 
-def build_report(requirements, cv_text, generic_words):
+def run_matching(requirements, cv_text, generic_words):
     """Apply the quote rules to the agent's analysis and build the report.
 
     Special cases:

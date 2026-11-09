@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from check_offer.convert import InputError, convert_file, main
+from check_offer.convert import convert_file, main
+from check_offer.exceptions import InputError
 
 
 FIXTURES = Path(__file__).parent / "fixtures"

@@ -1,6 +1,16 @@
+x-app: &app
+  build: .
+  image: check-offer
+  volumes:
+    - .:/app
+
 services:
   tests:
-    build: .
+    <<: *app
     command: pytest
-    volumes:
-      - .:/app
+  convert:
+    <<: *app
+    entrypoint: ["python", "-m", "check_offer.convert"]
+  validate:
+    <<: *app
+    entrypoint: ["python", "-m", "check_offer.cli"]
