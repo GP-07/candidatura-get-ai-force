@@ -39,6 +39,10 @@ con agentes para programar, testear y revisar.
 - Con 2 palabras o más, la lista de genéricas no aplica.
 - Un score mayor a 0 sin cita válida baja a 0.
 
+- La cita debe nombrar la tecnología o un equivalente directo; si no, score 0 y cita
+  `null`. El motor no detecta una cita real sin relación con el requisito: ver "Qué
+  garantiza el validador" en el README.
+
 ### Citas rechazadas
 
 1. El primer rechazo bloquea y le explica el error al agente.
@@ -108,3 +112,7 @@ checklist manual y ejemplos, incluida una oferta con una instrucción maliciosa.
 
 Corrida con la oferta y el CV reales, mini eval manual de 5 requisitos, revisión de
 código y de seguridad, `README.md` y `PROCESS.md` con lo que haya ocurrido.
+
+La mini eval incluye requisitos que no están en el CV, para medir si el agente inventa
+una relación. Con ese resultado se decide si implementar la segunda pasada con un
+subagente. Si no se implementa, queda como mejora en el README.

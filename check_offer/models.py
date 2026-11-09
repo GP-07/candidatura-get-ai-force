@@ -7,7 +7,13 @@ NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_lengt
 
 
 class QuoteStatus(Enum):
-    VALID = "valid"
+    """Result of checking a quote against the CV.
+
+    FOUND only means that the quote exists in the CV and is not a single generic
+    word. Whether the quote covers the requirement is decided by the score.
+    """
+
+    FOUND = "found"
     EMPTY = "empty"
     NOT_FOUND = "not_found"
     GENERIC_WORD = "generic_word"

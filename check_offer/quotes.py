@@ -32,7 +32,7 @@ def check_quote(quote, cv_text, generic_words):
 
     pattern = rf"(?<!\w){re.escape(normalized_quote)}(?!\w)"
     if re.search(pattern, _normalize(cv_text)):
-        return QuoteStatus.VALID
+        return QuoteStatus.FOUND
     return QuoteStatus.NOT_FOUND
 
 
