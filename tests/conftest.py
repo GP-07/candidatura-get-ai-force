@@ -12,3 +12,9 @@ def paths(tmp_path):
         "report": tmp_path / "report.json",
         "log": tmp_path / "private" / "rejected_quotes.jsonl",
     }
+
+
+@pytest.fixture
+def project(tmp_path):
+    (tmp_path / "private").mkdir()
+    return tmp_path

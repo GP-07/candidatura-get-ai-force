@@ -105,9 +105,25 @@ inexistente o ilegible da un error claro y el código de salida `1`.
 
 ### Fase 5: hook y skill
 
-Hook con tests: lee el evento de Claude Code por stdin, se activa solo con el archivo
-de salida, devuelve `2` para informar el error al agente, cuenta los intentos por
-análisis y avisa si Docker no está corriendo.
+Hook con tests: lee el evento de Claude Code por stdin, se activa solo con
+`private/analysis.json`, devuelve `2` para informar el error al agente y avisa si Docker
+no está corriendo.
+
+El único reintento se controla con `private/.analysis_attempts`, un archivo temporal: se
+crea con el primer rechazo, se borra en el reintento y la skill elimina cualquier resto
+al iniciar.
+
+Un evento ilegible se ignora, para no frenar otras escrituras. Por eso la skill termina
+comprobando que `private/report.json` se haya generado en esa corrida y, si no, avisa
+que la validación no se ejecutó.
+
+El código del hook vive en `check_offer/hook.py`, corre en la máquina y no en Docker, y
+solo puede importar módulos de la librería estándar y los del paquete que no dependan de
+pydantic.
+
+Rutas fijas: `private/analysis.json`, `private/converted/cv.txt` y
+`private/converted/offer.txt`. Todo debe funcionar al clonar el repo en otra máquina,
+sin rutas absolutas.
 
 La skill no admite TDD porque su salida no es determinística: se valida con una
 checklist manual y ejemplos, incluida una oferta con una instrucción maliciosa.

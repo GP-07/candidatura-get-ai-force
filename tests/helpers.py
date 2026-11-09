@@ -1,4 +1,5 @@
 import json
+import subprocess
 
 from check_offer.cli import main
 
@@ -40,3 +41,24 @@ def read_report(paths):
 def read_log(paths):
     lines = paths["log"].read_text(encoding="utf-8").splitlines()
     return [json.loads(line) for line in lines]
+
+
+def attempts_file(project):
+    return project / "private" / ".analysis_attempts"
+
+
+def write_event(path):
+    return json.dumps({"tool_name": "Write", "tool_input": {"file_path": str(path)}})
+
+
+def analysis_written_event(project):
+    return write_event(project / "private" / "analysis.json")
+
+
+def write_report(project, rejected_quotes):
+    report = {"summary": {}, "requirements": [], "rejected_quotes": rejected_quotes}
+    (project / "private" / "report.json").write_text(json.dumps(report), encoding="utf-8")
+
+
+def completed_process(returncode, stderr=""):
+    return subprocess.CompletedProcess([], returncode, stdout="", stderr=stderr)

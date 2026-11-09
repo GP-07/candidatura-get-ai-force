@@ -4,3 +4,7 @@ class ContractError(Exception):
 
 class InputError(Exception):
     """An input file is missing, unreadable or in an unsupported format."""
+
+
+class DockerUnavailableError(Exception):
+    """Docker is not installed or its daemon is not running."""
