@@ -1,8 +1,16 @@
+from enum import Enum
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, StringConstraints, field_validator
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+
+
+class QuoteStatus(Enum):
+    VALID = "valid"
+    EMPTY = "empty"
+    NOT_FOUND = "not_found"
+    GENERIC_WORD = "generic_word"
 
 
 class Requirement(BaseModel):

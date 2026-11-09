@@ -16,7 +16,7 @@ con agentes para programar, testear y revisar.
 
 | Pregunta | Responde | Cómo |
 |---|---|---|
-| ¿La cita existe en el CV? | `check_offer/validate.py` | Sin LLM; ignora mayúsculas, espacios y saltos de línea |
+| ¿La cita existe en el CV? | `check_offer/quotes.py` | Sin LLM; ignora mayúsculas, tildes, espacios y saltos de línea |
 | ¿La cita cubre el requisito? | LLM | Nivel de la rúbrica y justificación |
 
 ### Rúbrica
@@ -31,8 +31,8 @@ con agentes para programar, testear y revisar.
 ### Citas
 
 - La skill siempre intenta citar al menos 2 palabras.
-- Una cita de 1 palabra es válida solo si no está en la lista editable de palabras
-  genéricas (por ejemplo, "Python" sí; "desarrollo" no).
+- Una cita de 1 palabra es válida solo si no está en las listas de palabras genéricas,
+  en memoria por ahora (por ejemplo, "Python" sí; "desarrollo" no).
 - Con 2 palabras o más, la lista de genéricas no aplica.
 - Un score mayor a 0 sin cita válida baja a 0.
 
