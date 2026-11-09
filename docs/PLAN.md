@@ -31,6 +31,9 @@ con agentes para programar, testear y revisar.
 ### Citas
 
 - La skill siempre intenta citar al menos 2 palabras.
+- La skill copia el término completo tal como aparece en el CV ("Springboot", no
+  "Spring"). El motor exige palabras completas; si ese término cubre el requisito lo
+  decide el LLM con la rúbrica.
 - Una cita de 1 palabra es válida solo si no está en las listas de palabras genéricas,
   en memoria por ahora (por ejemplo, "Python" sí; "desarrollo" no).
 - Con 2 palabras o más, la lista de genéricas no aplica.

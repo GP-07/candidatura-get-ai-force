@@ -69,6 +69,13 @@ def test_a_word_does_not_match_inside_a_longer_word():
     assert check("Java") == QuoteStatus.NOT_FOUND
 
 
+def test_a_partial_term_is_rejected_so_the_agent_copies_the_full_term():
+    cv_text = "Servicios con Springboot"
+
+    assert check("Spring", cv_text) == QuoteStatus.NOT_FOUND
+    assert check("Springboot", cv_text) == QuoteStatus.VALID
+
+
 def test_accepts_a_single_word_with_symbols():
     assert check("C++") == QuoteStatus.VALID
 
