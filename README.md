@@ -49,8 +49,8 @@ skill.
 
 - **Sin llamadas a una API de LLM:** el análisis corre dentro de Claude Code, con un plan
   existente.
-- **Sin dependencias de runtime previstas:** el validador se apoya en la librería
-  estándar de Python.
+- **pydantic para la estructura:** valida el formato del JSON, y los tests se concentran
+  en las reglas propias del proyecto.
 - **Docker para las tareas:** tests, validación y conversión de PDF corren en
   contenedores. Claude Code se ejecuta en el host, para no meter sus credenciales en una
   imagen.

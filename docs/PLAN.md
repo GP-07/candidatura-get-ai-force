@@ -72,8 +72,9 @@ verde, revisión. Nada se commitea sin aprobación explícita.
 
 ### Fase 1: contrato del JSON
 
-JSON mal formado, campos faltantes, score fuera de la rúbrica y requisitos vacíos
-dan un error claro, sin resultado parcial.
+pydantic valida la estructura y por eso no se testean sus casos genéricos. Los tests
+cubren lo propio: la rúbrica, el rechazo de un análisis sin requisitos y que todo error
+llegue como `ContractError`, indicando el ítem inválido, sin resultado parcial.
 
 ### Fase 2: verificación de citas
 
