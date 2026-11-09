@@ -35,3 +35,34 @@ class Requirement(BaseModel):
 
 class Analysis(BaseModel):
     requirements: list[Requirement] = Field(min_length=1)
+
+
+class ValidatedRequirement(Requirement):
+    """A requirement after the rules are applied.
+
+    It is separate from Requirement because quote_status is computed by the
+    validator, so the agent must not be able to declare it.
+    """
+
+    quote_status: QuoteStatus
+
+
+class RejectedQuote(BaseModel):
+    """A claim of coverage whose quote was not accepted, as the agent made it."""
+
+    requirement: str
+    quote: str | None
+    original_score: float
+    quote_status: QuoteStatus
+
+
+class Summary(BaseModel):
+    total: int
+    covered: int
+    gaps: int
+
+
+class Report(BaseModel):
+    summary: Summary
+    requirements: list[ValidatedRequirement]
+    rejected_quotes: list[RejectedQuote]
