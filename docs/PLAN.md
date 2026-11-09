@@ -99,6 +99,10 @@ registro de rechazos; códigos de salida (`0` procesó, `2` contrato inválido).
 `.md` y `.txt` pasan tal cual; PDF con texto se convierte; PDF sin texto y extensión
 no soportada dan error claro. Servicios `convert` y `validate`.
 
+`convert` guarda el texto convertido y `validate` lee siempre ese archivo, para que la
+cita se compare contra el mismo texto que leyó el agente. Un archivo de entrada
+inexistente o ilegible da un error claro y el código de salida `1`.
+
 ### Fase 5: hook y skill
 
 Hook con tests: lee el evento de Claude Code por stdin, se activa solo con el archivo

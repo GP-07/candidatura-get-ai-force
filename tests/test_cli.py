@@ -1,4 +1,4 @@
-from helpers import analysis, read_log, read_report, run
+from helpers import analysis, read_log, read_report, run, run_cli
 
 
 def test_valid_analysis_writes_the_report_and_returns_zero(paths):
@@ -64,3 +64,21 @@ def test_invalid_contract_returns_two_and_writes_nothing(paths, capsys):
     assert capsys.readouterr().err != ""
     assert not paths["report"].exists()
     assert not paths["log"].exists()
+
+
+def test_a_missing_analysis_returns_one_and_writes_nothing(paths, capsys):
+    exit_code = run_cli(paths)
+
+    assert exit_code == 1
+    assert capsys.readouterr().err != ""
+    assert not paths["report"].exists()
+
+
+def test_a_missing_cv_returns_one_and_writes_nothing(paths, capsys):
+    paths["cv"].unlink()
+
+    exit_code = run(paths, analysis(1.0, "backend con Python"))
+
+    assert exit_code == 1
+    assert capsys.readouterr().err != ""
+    assert not paths["report"].exists()

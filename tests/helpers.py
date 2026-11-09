@@ -16,9 +16,7 @@ def analysis(score, quote):
     }
 
 
-def run(paths, content):
-    raw = content if isinstance(content, str) else json.dumps(content)
-    paths["analysis"].write_text(raw, encoding="utf-8")
+def run_cli(paths):
     return main(
         [
             str(paths["analysis"]),
@@ -27,6 +25,12 @@ def run(paths, content):
             str(paths["log"]),
         ]
     )
+
+
+def run(paths, content):
+    raw = content if isinstance(content, str) else json.dumps(content)
+    paths["analysis"].write_text(raw, encoding="utf-8")
+    return run_cli(paths)
 
 
 def read_report(paths):
