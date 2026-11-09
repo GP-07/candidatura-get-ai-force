@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Una skill de Claude Code (`/check-oferta`) que compara una oferta con un CV y
+Una skill de Claude Code (`/check-offer`) que compara una oferta con un CV y
 devuelve, por cada requisito, un nivel de cobertura y la cita del CV que lo
 respalda. Claude Code hace el análisis; el código propio verifica ese análisis.
 No se llama a ninguna API de LLM: alcanza con un plan de Claude Code.
@@ -16,7 +16,7 @@ con agentes para programar, testear y revisar.
 
 | Pregunta | Responde | Cómo |
 |---|---|---|
-| ¿La cita existe en el CV? | `validate.py` | Sin LLM; ignora mayúsculas, espacios y saltos de línea |
+| ¿La cita existe en el CV? | `check_offer/validate.py` | Sin LLM; ignora mayúsculas, espacios y saltos de línea |
 | ¿La cita cubre el requisito? | LLM | Nivel de la rúbrica y justificación |
 
 ### Rúbrica
@@ -42,7 +42,7 @@ con agentes para programar, testear y revisar.
 2. Hay un único reintento. Si la cita sigue siendo inválida, baja a 0 y el proceso
    termina.
 3. Toda cita rechazada se imprime en la salida y se agrega a
-   `private/citas_rechazadas.jsonl`.
+   `private/rejected_quotes.jsonl`.
 4. Los casos útiles se incorporan a mano: como test de regresión con datos ficticios
    y como regla o ejemplo en la skill. El modelo no aprende solo de estos registros.
 

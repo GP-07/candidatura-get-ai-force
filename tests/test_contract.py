@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from validate import ContractError, parse_analysis
+from check_offer.validate import ContractError, parse_analysis
 
 
 VALID_ANALYSIS = {
@@ -48,10 +48,19 @@ def test_accepts_every_rubric_score(score):
     assert result[0].score == score
 
 
-@pytest.mark.parametrize("score", [0.5, 2, True])
+@pytest.mark.parametrize("score", [0.5, 2, True, False])
 def test_rejects_a_score_outside_the_rubric(score):
     with pytest.raises(ContractError):
         parse_analysis(analysis_with_score(score))
+
+
+@pytest.mark.parametrize("field", ["requirement", "justification"])
+def test_rejects_text_with_only_whitespace(field):
+    analysis = copy.deepcopy(VALID_ANALYSIS)
+    analysis["requirements"][0][field] = "   "
+
+    with pytest.raises(ContractError, match=field):
+        parse_analysis(json.dumps(analysis))
 
 
 def test_rejects_an_analysis_without_requirements():
